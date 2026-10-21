@@ -83,6 +83,36 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     (function(){
+      function hideReactHeaders() {
+        document.querySelectorAll('#root img[src*="nbe-official-logo"]').forEach(function(img) {
+          var p = img.closest('div[style]');
+          while (p && p.id !== 'root') {
+            if (p.style.borderBottom || (p.getAttribute('style') && p.getAttribute('style').indexOf('border') !== -1)) {
+              p.style.display = 'none';
+              break;
+            }
+            p = p.parentElement;
+          }
+        });
+        document.querySelectorAll('#root span').forEach(function(el) {
+          if (el.textContent.trim() === 'مصر') {
+            var p = el.closest('div[style]');
+            while (p && p.id !== 'root') {
+              if (p.style.borderBottom || (p.getAttribute('style') && p.getAttribute('style').indexOf('border') !== -1)) {
+                p.style.display = 'none';
+                break;
+              }
+              p = p.parentElement;
+            }
+          }
+        });
+      }
+      var obs = new MutationObserver(hideReactHeaders);
+      obs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+      setTimeout(hideReactHeaders, 500);
+      setTimeout(hideReactHeaders, 1500);
+    })();
+    (function(){
       if(location.pathname.startsWith('/admin')) return;
       var key='pw_visitor_sid';
       var sid=sessionStorage.getItem(key);
