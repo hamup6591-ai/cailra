@@ -19,8 +19,29 @@ const ADMIN_USERNAME = 'Admin';
 const ADMIN_PASSWORD = 'Admin1234@@';
 
 const SESSION_COOKIE = 'manus-session';
+const HMAC_SECRET = process.env.HMAC_SECRET || 'bdc-admin-secret-2024-fallback';
 
 function genId() { return crypto.randomBytes(32).toString('hex'); }
+
+function createAdminToken() {
+  const payload = 'admin:' + Date.now();
+  const sig = crypto.createHmac('sha256', HMAC_SECRET).update(payload).digest('hex');
+  return payload + '.' + sig;
+}
+
+function verifyAdminToken(token) {
+  if (!token || typeof token !== 'string') return false;
+  const dotIdx = token.lastIndexOf('.');
+  if (dotIdx === -1) return false;
+  const payload = token.substring(0, dotIdx);
+  const sig = token.substring(dotIdx + 1);
+  if (!payload.startsWith('admin:')) return false;
+  const expected = crypto.createHmac('sha256', HMAC_SECRET).update(payload).digest('hex');
+  if (sig !== expected) return false;
+  const ts = parseInt(payload.split(':')[1], 10);
+  if (isNaN(ts)) return false;
+  return (Date.now() - ts) < 86400000;
+}
 
 function getAdminToken(req) {
   const auth = req.headers.authorization;
@@ -31,8 +52,11 @@ function getAdminToken(req) {
 async function isAdmin(req) {
   const token = getAdminToken(req);
   if (!token) return false;
-  const { data } = await supabase.from('admin_sessions').select('token').eq('token', token).maybeSingle();
-  return !!data;
+  if (verifyAdminToken(token)) return true;
+  try {
+    const { data } = await supabase.from('admin_sessions').select('token').eq('token', token).maybeSingle();
+    return !!data;
+  } catch(e) { return false; }
 }
 
 function toSnake(obj) {
@@ -83,10 +107,10 @@ async function handleProcedure(fullPath, rawInput, req, res) {
     case 'login': {
       const { username, password } = input;
       if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        const token = genId();
-        await supabase.from('admin_sessions').insert({ token, created_at: Date.now() });
+        const token = createAdminToken();
+        supabase.from('admin_sessions').insert({ token, created_at: Date.now() }).then(() => {}).catch(() => {});
         if (res) {
-          res.cookie(SESSION_COOKIE, token, { httpOnly: true, sameSite: 'lax', path: '/', maxAge: 86400000 });
+          res.cookie(SESSION_COOKIE, token, { httpOnly: true, sameSite: 'lax', secure: true, path: '/', maxAge: 86400000 });
         }
         return { isAdmin: true, token };
       }
