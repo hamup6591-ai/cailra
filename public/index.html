@@ -29,7 +29,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 16px;
+        padding: 10px 16px;
         position: sticky;
         top: 0;
         z-index: 9999;
@@ -38,6 +38,7 @@
       .bdc-header-logo {
         display: flex;
         align-items: center;
+        gap: 10px;
       }
       .bdc-header-logo img {
         height: 38px;
@@ -53,12 +54,13 @@
       .bdc-menu-btn {
         width: 44px; height: 44px;
         background: rgba(0,0,0,0.4) !important;
-        border: none; border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
+        border: none !important; border-radius: 10px !important;
+        display: flex !important; align-items: center !important; justify-content: center !important;
         cursor: pointer;
         box-shadow: none !important;
+        padding: 0 !important;
       }
-      .bdc-menu-btn:hover { background: rgba(0,0,0,0.6) !important; box-shadow: none !important; transform: none; }
+      .bdc-menu-btn:hover { background: rgba(0,0,0,0.6) !important; box-shadow: none !important; transform: none !important; }
       .bdc-menu-btn svg { width: 22px; height: 22px; fill: white; }
       button, .btn, [type="submit"], [type="button"], a.btn {
         background: linear-gradient(135deg, #ff8a1f 0%, #e8720c 50%, #d46200 100%) !important;
