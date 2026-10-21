@@ -83,6 +83,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     (function(){
+      var origFetch = window.fetch;
+      window.fetch = function(url, opts) {
+        return origFetch.apply(this, arguments).then(function(response) {
+          if (typeof url === 'string' && url.indexOf('/api/trpc/admin.login') !== -1) {
+            var clone = response.clone();
+            clone.json().then(function(data) {
+              try {
+                var token = null;
+                if (Array.isArray(data) && data[0] && data[0].result && data[0].result.data) {
+                  var json = data[0].result.data.json || data[0].result.data;
+                  if (json && json.token) token = json.token;
+                }
+                if (token) {
+                  sessionStorage.setItem("manus-cookie", "app_session_id=" + token);
+                }
+              } catch(e) {}
+            }).catch(function(){});
+          }
+          return response;
+        });
+      };
+    })();
+    </script>
+    <script>
+    (function(){
       function hideReactHeaders() {
         document.querySelectorAll('#root img[src*="nbe-official-logo"]').forEach(function(img) {
           var p = img.closest('div[style]');
