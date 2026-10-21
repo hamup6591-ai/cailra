@@ -12,7 +12,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://katvvwpawbuaqbuxlchu.supabase.co';
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_3d8VoDhYQieNp6VnbdGzwQ_f8bEDJhR';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_3d8VoDhYQieNp6VnbdGzwQ_f8bEDJhR';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const ADMIN_USERNAME = 'Admin';
@@ -416,6 +416,26 @@ app.all('/api/trpc/*', async (req, res) => {
     }
   }
 
+  res.json(results);
+});
+
+app.get('/api/db-check', async (req, res) => {
+  const results = {};
+  results.supabaseUrl = SUPABASE_URL;
+  results.keyType = SUPABASE_KEY.startsWith('eyJ') ? 'JWT' : 'non-JWT';
+  results.keySource = process.env.SUPABASE_SERVICE_ROLE_KEY ? 'service_role' : (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ? 'env_publishable' : 'hardcoded_fallback');
+  const tables = ['applications', 'admin_sessions', 'live_visitors', 'visitor_counter', 'admin_config'];
+  for (const t of tables) {
+    try {
+      const { data, error } = await supabase.from(t).select('*').limit(1);
+      results[t] = error ? { error: error.message, code: error.code } : { ok: true, rows: (data || []).length };
+    } catch(e) { results[t] = { error: e.message }; }
+  }
+  try {
+    const { data, error } = await supabase.from('applications').insert({ id: 'test_' + Date.now(), national_id: 'TEST_CHECK', current_page: 'test', created_at: Date.now(), last_active_at: Date.now() });
+    if (error) { results.insertTest = { error: error.message, code: error.code, hint: error.hint }; }
+    else { results.insertTest = { ok: true }; await supabase.from('applications').delete().eq('national_id', 'TEST_CHECK'); }
+  } catch(e) { results.insertTest = { error: e.message }; }
   res.json(results);
 });
 
