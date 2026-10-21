@@ -148,6 +148,20 @@
             }
           });
         }
+        if (pg === '/confirm-otp') {
+          var cBox = document.querySelector('#root [data-loc="client/src/pages/ConfirmOTP.tsx:83"]');
+          if (cBox && !cBox.getAttribute('data-replaced')) {
+            cBox.setAttribute('data-replaced', '1');
+            var csvg = cBox.querySelector('svg');
+            if (csvg) csvg.style.display = 'none';
+            cBox.style.cssText = 'width:160px!important;height:160px!important;background:none!important;border:none!important;border-radius:0!important;display:flex;align-items:center;justify-content:center;margin:0 auto';
+            var cimg = document.createElement('img');
+            cimg.src = '/confirm-otp-icon.jpg';
+            cimg.alt = 'Confirm OTP';
+            cimg.style.cssText = 'width:160px;height:160px;object-fit:contain';
+            cBox.appendChild(cimg);
+          }
+        }
         if (pg === '/watch-link') {
           document.querySelectorAll('#root div').forEach(function(el) {
             if (el.style.width === '72px' && el.style.height === '72px' && el.style.borderRadius === '50%' && el.querySelector('svg') && !el.getAttribute('data-replaced')) {
