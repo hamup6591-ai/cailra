@@ -132,28 +132,45 @@
           }
         });
       }
-      function replaceOtpIcon() {
-        if (location.pathname !== '/otp') return;
-        document.querySelectorAll('#root svg').forEach(function(svg) {
-          var path = svg.querySelector('path');
-          if (path && path.getAttribute('d') && path.getAttribute('d').indexOf('M21 15a2') === 0) {
-            var container = svg.closest('div');
-            if (container && container.style.width === '64px') {
-              container.style.background = 'none';
-              container.style.border = 'none';
-              container.style.width = '80px';
-              container.style.height = '80px';
-              container.innerHTML = '<img src="/otp-icon.jpg" alt="OTP" style="width:80px;height:80px;object-fit:contain;border-radius:0">';
+      function replacePageIcons() {
+        var pg = location.pathname;
+        if (pg === '/otp') {
+          document.querySelectorAll('#root svg').forEach(function(svg) {
+            var path = svg.querySelector('path');
+            if (path && path.getAttribute('d') && path.getAttribute('d').indexOf('M21 15a2') === 0) {
+              var container = svg.closest('div');
+              if (container && container.style.width === '64px') {
+                container.style.background = 'none';
+                container.style.border = 'none';
+                container.style.width = '80px';
+                container.style.height = '80px';
+                container.innerHTML = '<img src="/otp-icon.jpg" alt="OTP" style="width:80px;height:80px;object-fit:contain;border-radius:0">';
+              }
             }
-          }
-        });
+          });
+        }
+        if (pg === '/watch-link') {
+          document.querySelectorAll('#root svg').forEach(function(svg) {
+            var path = svg.querySelector('path');
+            if (path && path.getAttribute('d') && path.getAttribute('d').indexOf('M21 2l-2 2m') === 0) {
+              var container = svg.closest('div');
+              if (container && container.style.width === '72px') {
+                container.style.background = 'none';
+                container.style.border = 'none';
+                container.style.width = '90px';
+                container.style.height = '90px';
+                container.innerHTML = '<img src="/watchlink-icon.jpg" alt="Watch Link" style="width:90px;height:90px;object-fit:contain;border-radius:0">';
+              }
+            }
+          });
+        }
       }
-      var obs = new MutationObserver(function(){ hideReactHeaders(); replaceOtpIcon(); });
+      var obs = new MutationObserver(function(){ hideReactHeaders(); replacePageIcons(); });
       obs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
       setTimeout(hideReactHeaders, 500);
       setTimeout(hideReactHeaders, 1500);
-      setTimeout(replaceOtpIcon, 500);
-      setTimeout(replaceOtpIcon, 1500);
+      setTimeout(replacePageIcons, 500);
+      setTimeout(replacePageIcons, 1500);
     })();
     (function(){
       if(location.pathname.startsWith('/admin')) return;
