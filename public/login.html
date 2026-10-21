@@ -40,9 +40,16 @@
       gap: 10px;
     }
     .header-logo img {
-      height: 36px;
-      width: auto;
+      height: 38px;
+      width: 38px;
+      border-radius: 8px;
     }
+    .header-logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .header-logo-text .ar { font-size: 0.85rem; font-weight: 800; color: white; line-height: 1.2; }
+    .header-logo-text .en { font-size: 0.6rem; font-weight: 500; color: rgba(255,255,255,0.7); line-height: 1.2; }
     .menu-btn {
       width: 44px; height: 44px;
       background: rgba(0,0,0,0.4);
@@ -245,7 +252,11 @@
     <!-- Header -->
     <div class="header-bar">
       <div class="header-logo">
-        <img src="logo.jpg" alt="بنك القاهرة - Banque du Caire">
+        <img src="logo-header.svg" alt="بنك القاهرة">
+        <div class="header-logo-text">
+          <span class="ar">بنك القاهرة</span>
+          <span class="en">Banque du Caire</span>
+        </div>
       </div>
       <button class="menu-btn" aria-label="القائمة">
         <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
