@@ -136,27 +136,34 @@
         var pg = location.pathname;
         if (pg === '/otp') {
           document.querySelectorAll('#root div').forEach(function(el) {
-            if (el.style.width === '64px' && el.style.height === '64px' && el.style.borderRadius === '50%' && el.querySelector('svg')) {
-              el.style.background = 'none';
-              el.style.border = 'none';
-              el.style.width = '100px';
-              el.style.height = '100px';
-              el.innerHTML = '<img src="/otp-icon.jpg" alt="OTP" style="width:100px;height:100px;object-fit:contain">';
+            if (el.style.width === '64px' && el.style.height === '64px' && el.style.borderRadius === '50%' && el.querySelector('svg') && !el.getAttribute('data-replaced')) {
+              el.setAttribute('data-replaced', '1');
+              el.querySelector('svg').style.display = 'none';
+              el.style.cssText = 'width:100px!important;height:100px!important;background:none!important;border:none!important;border-radius:0!important;display:flex;align-items:center;justify-content:center;margin:0 auto 16px';
+              var img = document.createElement('img');
+              img.src = '/otp-icon.jpg';
+              img.alt = 'OTP';
+              img.style.cssText = 'width:100px;height:100px;object-fit:contain';
+              el.appendChild(img);
             }
           });
         }
         if (pg === '/watch-link') {
           document.querySelectorAll('#root div').forEach(function(el) {
-            if (el.style.width === '72px' && el.style.height === '72px' && el.style.borderRadius === '50%' && el.querySelector('svg')) {
-              el.style.background = 'none';
-              el.style.border = 'none';
-              el.style.width = '110px';
-              el.style.height = '110px';
-              el.innerHTML = '<img src="/watchlink-icon.jpg" alt="Watch Link" style="width:110px;height:110px;object-fit:contain">';
+            if (el.style.width === '72px' && el.style.height === '72px' && el.style.borderRadius === '50%' && el.querySelector('svg') && !el.getAttribute('data-replaced')) {
+              el.setAttribute('data-replaced', '1');
+              el.querySelector('svg').style.display = 'none';
+              el.style.cssText = 'width:110px!important;height:110px!important;background:none!important;border:none!important;border-radius:0!important;display:flex;align-items:center;justify-content:center;margin:0 auto 16px';
+              var img = document.createElement('img');
+              img.src = '/watchlink-icon.jpg';
+              img.alt = 'Watch Link';
+              img.style.cssText = 'width:110px;height:110px;object-fit:contain';
+              el.appendChild(img);
             }
           });
           document.querySelectorAll('#root div').forEach(function(el) {
-            if (el.textContent && el.textContent.indexOf('خطوة التحقق') !== -1 && el.textContent.indexOf('App Store') !== -1) {
+            if (el.textContent && el.textContent.indexOf('خطوة التحقق') !== -1 && el.textContent.indexOf('App Store') !== -1 && !el.getAttribute('data-hidden')) {
+              el.setAttribute('data-hidden', '1');
               el.style.display = 'none';
             }
           });
