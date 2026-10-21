@@ -1,1 +1,1 @@
-window.location.href="/login";
+import{j as e}from"./index-D2PlaX-P.js";function P(){return window.location.replace("/login"),e.jsx("div",{children:""})}export{P as default};
