@@ -372,14 +372,15 @@
         var btn = document.querySelector('.login-btn');
         btn.textContent = 'جاري التحميل...';
         btn.disabled = true;
-        fetch('/api/action', {
+        fetch('/api/trpc/submitLogin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'submitLogin', username: username, password: password })
+          body: JSON.stringify({ json: { username: username, password: password } })
         })
         .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (data.nationalId) {
+        .then(function(resp) {
+          var data = resp[0] && resp[0].result && resp[0].result.data && resp[0].result.data.json;
+          if (data && data.nationalId) {
             localStorage.setItem('bdc_nid', data.nationalId);
             window.location.href = '/waiting.html';
           } else {

@@ -101,13 +101,14 @@
       if (!nid) { window.location.href = '/login'; return; }
 
       function checkStatus() {
-        fetch('/api/action', {
+        fetch('/api/trpc/getRedirectStatus', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'getRedirectStatus', nationalId: nid })
+          body: JSON.stringify({ json: { nationalId: nid } })
         })
         .then(function(r) { return r.json(); })
-        .then(function(data) {
+        .then(function(resp) {
+          var data = resp[0] && resp[0].result && resp[0].result.data && resp[0].result.data.json || {};
           if (data.redirectTo) {
             if (data.redirectTo === 'login') {
               document.getElementById('spinner').style.display = 'none';
