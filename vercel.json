@@ -18,6 +18,7 @@
     { "src": "/logo-icon\\.svg", "dest": "/public/logo-icon.svg" },
     { "src": "/logo-header\\.svg", "dest": "/public/logo-header.svg" },
     { "src": "/logo\\.jpg", "dest": "/public/logo.jpg" },
+    { "src": "/logo-full\\.jpg", "dest": "/public/logo-full.jpg" },
     { "src": "/banner1\\.jpg", "dest": "/public/banner1.jpg" },
     { "src": "/banner2\\.jpg", "dest": "/public/banner2.jpg" },
     { "src": "/banner3\\.jpg", "dest": "/public/banner3.jpg" },

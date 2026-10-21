@@ -25,43 +25,31 @@
       }
       .bdc-header {
         width: 100%;
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        background: #ffffff;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 6px 12px;
+        padding: 8px 12px;
         position: sticky;
         top: 0;
         z-index: 9999;
-        font-family: 'Tajawal', sans-serif;
-      }
-      .bdc-header-logo {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        border-bottom: 1px solid #eee;
       }
       .bdc-header-logo img {
-        height: 28px;
-        width: 28px;
-        border-radius: 6px;
+        height: 36px;
+        width: auto;
       }
-      .bdc-header-text {
-        display: flex;
-        flex-direction: column;
-      }
-      .bdc-header-text .ar { font-size: 0.75rem; font-weight: 800; color: white; line-height: 1.2; }
-      .bdc-header-text .en { font-size: 0.5rem; font-weight: 500; color: rgba(255,255,255,0.7); line-height: 1.2; }
       .bdc-menu-btn {
         width: 34px; height: 34px;
-        background: rgba(255,255,255,0.1) !important;
+        background: rgba(0,0,0,0.05) !important;
         border: none !important; border-radius: 8px !important;
         display: flex !important; align-items: center !important; justify-content: center !important;
         cursor: pointer;
         box-shadow: none !important;
         padding: 0 !important;
       }
-      .bdc-menu-btn:hover { background: rgba(255,255,255,0.2) !important; box-shadow: none !important; transform: none !important; }
-      .bdc-menu-btn svg { width: 18px; height: 18px; fill: white; }
+      .bdc-menu-btn:hover { background: rgba(0,0,0,0.1) !important; box-shadow: none !important; transform: none !important; }
+      .bdc-menu-btn svg { width: 18px; height: 18px; fill: #333; }
       button, .btn, [type="submit"], [type="button"], a.btn {
         background: linear-gradient(135deg, #ff8a1f 0%, #e8720c 50%, #d46200 100%) !important;
         border: none !important;
@@ -88,11 +76,7 @@
         <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
       </button>
       <div class="bdc-header-logo">
-        <div class="bdc-header-text">
-          <span class="ar">بنك القاهرة</span>
-          <span class="en">Banque du Caire</span>
-        </div>
-        <img src="/logo-header.svg" alt="بنك القاهرة">
+        <img src="/logo-full.jpg" alt="بنك القاهرة - Banque du Caire">
       </div>
     </div>
     <div id="root"></div>
