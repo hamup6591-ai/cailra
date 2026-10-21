@@ -141,14 +141,17 @@
     .hero-btn {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 16px 36px;
-      border: 2px solid rgba(255,255,255,0.4);
+      border: none;
       border-radius: 14px;
-      background: transparent; color: white;
+      background: linear-gradient(135deg, #ff8a1f 0%, #e8720c 50%, #d46200 100%);
+      color: white;
       font-family: 'Tajawal', sans-serif;
       font-size: 1.05rem; font-weight: 700; cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(232,114,12,0.3);
     }
-    .hero-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.7); }
+    .hero-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(232,114,12,0.4); }
+    .hero-btn:active { transform: translateY(0); }
     .hero-btn svg { width: 18px; height: 18px; fill: white; }
 
     /* === ACTION CARDS === */
