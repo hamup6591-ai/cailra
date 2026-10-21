@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" fill="none">
+  <defs>
+    <linearGradient id="orangeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e85d0c"/>
+      <stop offset="100%" stop-color="#f5a623"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Orange square with icon -->
+  <rect x="330" y="5" width="65" height="65" rx="6" fill="url(#orangeGrad)"/>
+
+  <!-- Gate/Arch icon inside square -->
+  <g transform="translate(362.5, 12)" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round">
+    <!-- Outer arch -->
+    <path d="M-16 52 L-16 22 C-16 8 0 -2 0 -2 C0 -2 16 8 16 22 L16 52" fill="none"/>
+    <!-- Middle arch -->
+    <path d="M-9 52 L-9 26 C-9 16 0 10 0 10 C0 10 9 16 9 26 L9 52" fill="none"/>
+    <!-- Inner pointed arch -->
+    <path d="M-3 52 L-3 32 C-3 24 0 20 0 20 C0 20 3 24 3 32 L3 52" fill="none"/>
+    <!-- Bottom vertical lines -->
+    <line x1="-16" y1="48" x2="-16" y2="52"/>
+    <line x1="-9" y1="48" x2="-9" y2="52"/>
+    <line x1="-3" y1="48" x2="-3" y2="52"/>
+    <line x1="3" y1="48" x2="3" y2="52"/>
+    <line x1="9" y1="48" x2="9" y2="52"/>
+    <line x1="16" y1="48" x2="16" y2="52"/>
+  </g>
+
+  <!-- Arabic text -->
+  <text x="320" y="38" text-anchor="end" font-family="Tajawal, Arial, sans-serif" font-size="32" font-weight="800" fill="#333" direction="rtl">بنك القاهرة</text>
+
+  <!-- French text -->
+  <text x="320" y="65" text-anchor="end" font-family="Georgia, serif" font-size="22" font-weight="400" fill="#888" letter-spacing="1">Banque du Caire</text>
+</svg>
