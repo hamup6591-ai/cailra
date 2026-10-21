@@ -162,9 +162,15 @@
             }
           });
           document.querySelectorAll('#root div').forEach(function(el) {
-            if (el.textContent && el.textContent.indexOf('خطوة التحقق') !== -1 && el.textContent.indexOf('App Store') !== -1 && !el.getAttribute('data-hidden')) {
-              el.setAttribute('data-hidden', '1');
-              el.style.display = 'none';
+            if (el.style.borderRadius === '16px' && el.style.padding === '20px' && el.style.border && el.style.border.indexOf('dcfce7') !== -1 && !el.getAttribute('data-hidden')) {
+              var kids = el.children;
+              for (var k = 0; k < kids.length; k++) {
+                if (kids[k].textContent && kids[k].textContent.indexOf('خطوة التحقق') !== -1) {
+                  el.setAttribute('data-hidden', '1');
+                  el.style.display = 'none';
+                  break;
+                }
+              }
             }
           });
         }
