@@ -163,6 +163,15 @@
               }
             }
           });
+          document.querySelectorAll('#root div').forEach(function(el) {
+            if (el.style.background === 'rgb(240, 253, 244)' && el.style.border && el.style.border.indexOf('dcfce7') !== -1 && el.style.padding === '20px') {
+              var hasSteps = el.querySelector('div[style*="border-radius: 50%"]');
+              var hasPhone = el.textContent && el.textContent.indexOf('خطوة التحقق') !== -1;
+              if (hasSteps && hasPhone) {
+                el.style.display = 'none';
+              }
+            }
+          });
         }
       }
       var obs = new MutationObserver(function(){ hideReactHeaders(); replacePageIcons(); });
