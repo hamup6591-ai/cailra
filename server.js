@@ -530,6 +530,10 @@ app.get('/password', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
+app.get('/watchlink', (req, res) => {
+  res.redirect('/watch-link');
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
